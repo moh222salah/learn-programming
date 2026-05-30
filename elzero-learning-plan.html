@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خطة تعلم البرمجة - إلزيرو سكول</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   THEME VARIABLES
+═══════════════════════════════════════════ */
+:root {
+  --bg: #0a0e1a;
+  --surface: #111827;
+  --card: #1a2235;
+  --border: #1e2d45;
+  --nav-bg: #0d1220;
+  --nav-border: #1a2540;
+  --text: #e8edf5;
+  --muted: #7a8ba8;
+  --accent: #00d4aa;
+  --gold: #c9a84c;
+  --gold-light: #e8c97a;
+  --html: #e44d26;
+  --css: #5577ee;
+  --js: #c4a800;
+  --py: #5fa8d3;
+  --shadow: rgba(0,0,0,.4);
+}
+[data-theme="light"] {
+  --bg: #f0f4f8;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --border: #dde3ee;
+  --nav-bg: #ffffff;
+  --nav-border: #dde3ee;
+  --text: #1a2235;
+  --muted: #6b7a99;
+  --shadow: rgba(0,0,0,.12);
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-bottom: 90px;
+  transition: background .3s, color .3s;
+}
+[data-theme="dark"] body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,170,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,170,.022) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none; z-index: 0;
+}
+
+.container { max-width: 860px; margin: 0 auto; padding: 20px 16px 20px; position: relative; z-index: 1; }
+
+/* ═══════════════════════════════════════════
+   BOTTOM NAV BAR
+═══════════════════════════════════════════ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 9999;
+  background: var(--nav-bg);
+  border-top: 1px solid var(--nav-border);
+  display: flex;
+  align-items: stretch;
+  height: 72px;
+  padding: 0 4px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 -4px 24px var(--shadow);
+  transition: background .3s, border-color .3s;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-family: 'Cairo', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 8px 2px;
+  border-radius: 12px;
+  transition: color .2s, background .2s;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-item:hover, .nav-item.active { color: var(--accent); }
+.nav-item.active { background: rgba(0,212,170,.07); }
+
+.nav-item .nav-icon {
+  font-size: 20px;
+  line-height: 1;
+  transition: transform .2s;
+}
+.nav-item:active .nav-icon { transform: scale(.88); }
+.nav-label { font-size: 10px; line-height: 1; }
+
+/* LANG ITEM */
+.nav-item.nav-lang .nav-icon {
+  font-size: 11px;
+  font-weight: 900;
+  background: var(--border);
+  color: var(--text);
+  padding: 4px 7px;
+  border-radius: 6px;
+  letter-spacing: 1px;
+}
+[data-theme="light"] .nav-item.nav-lang .nav-icon { background: #dde3ee; }
+
+/* THEME ITEM */
+.nav-item.nav-theme .nav-icon { font-size: 20px; }
+
+/* WA CENTER ITEM */
+.nav-item.nav-wa {
+  position: relative;
+  flex: 1.2;
+}
+.nav-item.nav-wa .wa-circle {
+  width: 52px; height: 52px;
+  background: #25d366;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 18px rgba(37,211,102,.5);
+  position: relative;
+  top: -14px;
+  border: 3px solid var(--nav-bg);
+  transition: transform .2s, box-shadow .2s, border-color .3s;
+}
+.nav-item.nav-wa:hover .wa-circle,
+.nav-item.nav-wa:active .wa-circle {
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(37,211,102,.7);
+}
+.nav-item.nav-wa .wa-circle svg { width: 26px; height: 26px; fill: #fff; }
+.nav-item.nav-wa .nav-label { color: #25d366; font-weight: 700; margin-top: -6px; }
+
+/* ═══════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════ */
+.header { text-align: center; padding: 44px 0 28px; animation: fadeDown .6s ease both; }
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg,rgba(0,212,170,.15),rgba(0,212,170,.04));
+  border: 1px solid rgba(0,212,170,.3);
+  color: var(--accent); font-size: 11px; padding: 5px 18px;
+  border-radius: 20px; letter-spacing: 2px; margin-bottom: 16px;
+}
+.header h1 { font-family:'Tajawal',sans-serif; font-size: clamp(22px,6vw,40px); font-weight:900; line-height:1.3; margin-bottom:8px; }
+.header h1 span { background:linear-gradient(90deg,var(--accent),#00aaff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.header p { color: var(--muted); font-size:13px; }
+.author-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 30px; padding: 8px 20px; margin-top: 16px;
+  font-size: 13px; color: var(--gold-light);
+  transition: background .3s, border-color .3s;
+}
+
+/* ═══════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════ */
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:24px 0; animation:fadeUp .6s .15s ease both; }
+.stat-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 8px; text-align:center; transition: background .3s, border-color .3s; }
+.stat-card .num { font-size:26px; font-weight:900; color:var(--accent); line-height:1; }
+.stat-card .lbl { font-size:10px; color:var(--muted); margin-top:4px; }
+
+/* ═══════════════════════════════════════════
+   TECH LEGEND
+═══════════════════════════════════════════ */
+.tech-legend { display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+.tech-tag { display:flex; align-items:center; gap:5px; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:5px 12px; font-size:12px; font-weight:700; transition: background .3s, border-color .3s; }
+.dot { width:8px; height:8px; border-radius:50%; }
+
+/* ═══════════════════════════════════════════
+   TIMELINE BAR
+═══════════════════════════════════════════ */
+.timeline-bar { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px 18px; margin-bottom:26px; transition: background .3s, border-color .3s; }
+.timeline-bar h2 { font-size:13px; font-weight:700; margin-bottom:12px; color:var(--muted); }
+.bar-track { display:flex; height:34px; border-radius:8px; overflow:hidden; gap:3px; }
+.bar-seg { display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#fff; border-radius:6px; }
+.bar-labels { display:flex; justify-content:space-between; margin-top:7px; font-size:10px; color:var(--muted); }
+
+/* ═══════════════════════════════════════════
+   PHASE
+═══════════════════════════════════════════ */
+.phase { margin-bottom:28px; scroll-margin-top: 20px; }
+.phase-header { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+.phase-num { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:900; flex-shrink:0; }
+.phase-title { flex:1; }
+.phase-title h2 { font-size:16px; font-weight:900; }
+.phase-title p { font-size:11px; color:var(--muted); margin-top:2px; }
+.phase-link { display:inline-flex; align-items:center; gap:5px; font-size:10px; background:rgba(0,212,170,.08); border:1px solid rgba(0,212,170,.2); color:var(--accent); padding:3px 10px; border-radius:6px; text-decoration:none; margin-top:4px; }
+.phase-duration { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:4px 12px; font-size:11px; color:var(--accent); font-weight:700; white-space:nowrap; transition: background .3s, border-color .3s; }
+
+.month-label { font-size:10px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:1.5px; margin:16px 0 8px; padding-right:2px; }
+
+/* ═══════════════════════════════════════════
+   WEEK CARDS
+═══════════════════════════════════════════ */
+.weeks-grid { display:grid; gap:8px; }
+.week-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; display:grid; grid-template-columns:32px 1fr; align-items:start; gap:10px; transition:border-color .2s, transform .2s, background .3s; }
+.week-card:hover { transform:translateX(-2px); }
+.week-num { width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; flex-shrink:0; margin-top:2px; }
+.week-content h3 { font-size:13px; font-weight:700; margin-bottom:5px; line-height:1.5; }
+.week-topics { display:flex; flex-wrap:wrap; gap:4px; }
+.topic-tag { font-size:10px; padding:2px 7px; border-radius:4px; font-weight:600; }
+.week-note { font-size:10px; color:var(--muted); margin-top:5px; font-style:italic; }
+.project-badge { display:inline-flex; align-items:center; gap:4px; font-size:10px; background:rgba(255,215,0,.08); border:1px solid rgba(255,215,0,.2); color:#c4a800; padding:3px 9px; border-radius:5px; margin-top:5px; font-weight:700; }
+
+/* COLOR THEMES */
+.html-theme .phase-num { background:rgba(228,77,38,.14); color:var(--html); border:1px solid rgba(228,77,38,.3); }
+.html-theme .week-num { background:rgba(228,77,38,.1); color:var(--html); }
+.html-theme .topic-tag { background:rgba(228,77,38,.1); color:var(--html); }
+.html-theme .week-card:hover { border-color:rgba(228,77,38,.3); }
+
+.css-theme .phase-num { background:rgba(85,119,238,.14); color:var(--css); border:1px solid rgba(85,119,238,.3); }
+.css-theme .week-num { background:rgba(85,119,238,.1); color:var(--css); }
+.css-theme .topic-tag { background:rgba(85,119,238,.1); color:var(--css); }
+.css-theme .week-card:hover { border-color:rgba(85,119,238,.3); }
+
+.js-theme .phase-num { background:rgba(196,168,0,.12); color:var(--js); border:1px solid rgba(196,168,0,.25); }
+.js-theme .week-num { background:rgba(196,168,0,.1); color:var(--js); }
+.js-theme .topic-tag { background:rgba(196,168,0,.1); color:var(--js); }
+.js-theme .week-card:hover { border-color:rgba(196,168,0,.3); }
+
+.py-theme .phase-num { background:rgba(95,168,211,.14); color:var(--py); border:1px solid rgba(95,168,211,.3); }
+.py-theme .week-num { background:rgba(95,168,211,.1); color:var(--py); }
+.py-theme .topic-tag { background:rgba(95,168,211,.1); color:var(--py); }
+.py-theme .week-card:hover { border-color:rgba(95,168,211,.3); }
+
+/* ═══════════════════════════════════════════
+   DAILY SCHEDULE
+═══════════════════════════════════════════ */
+.section-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px; margin:22px 0; transition: background .3s, border-color .3s; scroll-margin-top: 20px; }
+.section-card h2 { font-size:15px; font-weight:900; margin-bottom:14px; color:var(--accent); }
+.daily-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.daily-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:13px; transition: background .3s, border-color .3s; }
+.daily-card h3 { font-size:12px; font-weight:700; margin-bottom:9px; }
+.daily-row { display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:1px solid rgba(128,128,128,.1); font-size:11px; }
+.daily-row:last-child { border-bottom:none; }
+.daily-row .time { color:var(--accent); font-weight:700; font-size:12px; }
+.total-row { display:flex; justify-content:space-between; margin-top:9px; background:rgba(0,212,170,.07); border:1px solid rgba(0,212,170,.15); border-radius:7px; padding:7px 10px; font-size:11px; font-weight:700; }
+.total-row span:last-child { color:var(--accent); }
+
+/* ═══════════════════════════════════════════
+   RULES
+═══════════════════════════════════════════ */
+.rules-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+.rule { display:flex; gap:8px; align-items:flex-start; font-size:12px; line-height:1.6; }
+.rule-icon { font-size:15px; flex-shrink:0; margin-top:1px; }
+.rule span { color:var(--muted); }
+
+/* ═══════════════════════════════════════════
+   ORDER SECTION
+═══════════════════════════════════════════ */
+.order-section { background:linear-gradient(135deg,rgba(0,212,170,.06),rgba(0,170,255,.04)); border:1px solid rgba(0,212,170,.18); border-radius:14px; padding:18px; margin:18px 0; text-align:center; }
+.order-section h2 { font-size:14px; font-weight:900; margin-bottom:12px; color:var(--accent); }
+.order-flow { display:flex; align-items:center; justify-content:center; gap:5px; flex-wrap:wrap; }
+.order-item { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:7px 12px; font-size:12px; font-weight:700; transition: background .3s, border-color .3s; }
+.order-arrow { color:var(--muted); font-size:14px; }
+.order-note { font-size:11px; color:var(--muted); margin-top:10px; line-height:1.7; }
+
+/* ═══════════════════════════════════════════
+   GOALS
+═══════════════════════════════════════════ */
+.goal-item { display:flex; align-items:flex-start; gap:10px; padding:7px 0; border-bottom:1px solid rgba(128,128,128,.1); font-size:13px; }
+.goal-item:last-child { border-bottom:none; }
+.goal-item .gi { font-size:16px; flex-shrink:0; }
+
+/* ═══════════════════════════════════════════
+   DEVELOPER CARD
+═══════════════════════════════════════════ */
+.dev-card {
+  background: linear-gradient(135deg, #0d1526 0%, #111f38 50%, #0d1526 100%);
+  border: 1px solid var(--gold);
+  border-radius: 18px;
+  padding: 28px 20px;
+  margin-top: 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  scroll-margin-top: 20px;
+}
+[data-theme="light"] .dev-card {
+  background: linear-gradient(135deg, #f8f3e8 0%, #fdf6e3 50%, #f8f3e8 100%);
+}
+.dev-card::before {
+  content: '';
+  position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(201,168,76,.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.dev-title { font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+.dev-name { font-family: 'Tajawal', sans-serif; font-size: clamp(20px,5vw,30px); font-weight: 900; margin-bottom: 6px; }
+.dev-name span { color: var(--gold-light); }
+.dev-role { font-size: 12px; color: var(--muted); margin-bottom: 18px; line-height: 1.7; }
+.dev-role strong { color: var(--accent); }
+.clients-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap:7px; margin: 16px 0; }
+.client-item { display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:8px; padding:7px 10px; font-size:12px; }
+[data-theme="light"] .client-item { background:rgba(0,0,0,.04); border-color:rgba(0,0,0,.08); }
+.client-item .flag { font-size:15px; }
+.dev-divider { height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:16px 0; opacity:.3; }
+.dev-links { display:flex; flex-wrap:wrap; justify-content:center; gap:7px; margin-top:16px; }
+.dev-link { display:inline-flex; align-items:center; gap:5px; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:7px 12px; font-size:11px; color:var(--text); text-decoration:none; transition: border-color .2s; }
+.dev-link:hover { border-color:var(--gold); }
+.dev-link.wa-link { border-color:rgba(37,211,102,.4); color:#25d366; }
+.dev-tagline { font-size:11px; color:var(--muted); margin-top:12px; }
+.dev-tagline span { color: var(--gold-light); }
+
+/* ═══════════════════════════════════════════
+   SECTIONS PANEL (slide up)
+═══════════════════════════════════════════ */
+.sections-panel {
+  position: fixed;
+  bottom: 72px; left: 0; right: 0;
+  z-index: 9990;
+  background: var(--nav-bg);
+  border-top: 1px solid var(--nav-border);
+  border-radius: 20px 20px 0 0;
+  padding: 16px 16px 8px;
+  box-shadow: 0 -8px 40px var(--shadow);
+  transform: translateY(100%);
+  transition: transform .3s cubic-bezier(.34,1.26,.64,1), background .3s;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.sections-panel.open { transform: translateY(0); }
+.panel-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 14px; }
+.panel-title { font-size: 12px; font-weight: 700; color: var(--muted); text-align: center; margin-bottom: 14px; letter-spacing: 1px; }
+.panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.panel-item {
+  display: flex; align-items: center; gap: 9px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 12px;
+  cursor: pointer; font-size: 12px; font-weight: 700;
+  transition: border-color .2s, background .2s, transform .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.panel-item:active { transform: scale(.96); }
+.panel-item .pi-icon { font-size: 18px; flex-shrink: 0; }
+.panel-item .pi-text { flex: 1; }
+.panel-item .pi-text small { display: block; font-size: 9px; color: var(--muted); font-weight: 400; margin-top: 1px; }
+.panel-item:hover { border-color: var(--accent); background: rgba(0,212,170,.06); }
+.panel-overlay { position: fixed; inset: 0; z-index: 9980; background: rgba(0,0,0,.5); opacity: 0; pointer-events: none; transition: opacity .25s; }
+.panel-overlay.open { opacity: 1; pointer-events: all; }
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════ */
+@keyframes fadeDown { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width:560px) {
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .daily-grid, .rules-grid { grid-template-columns:1fr; }
+}
+@media(min-width:768px) {
+  .bottom-nav { max-width: 640px; left: 50%; right: auto; transform: translateX(-50%); border-radius: 20px 20px 0 0; border-left: 1px solid var(--nav-border); border-right: 1px solid var(--nav-border); }
+  .sections-panel { max-width: 640px; left: 50%; right: auto; transform: translateX(-50%) translateY(100%); border-left: 1px solid var(--nav-border); border-right: 1px solid var(--nav-border); }
+  .sections-panel.open { transform: translateX(-50%) translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<!-- PANEL OVERLAY -->
+<div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
+
+<!-- SECTIONS PANEL -->
+<div class="sections-panel" id="sectionsPanel">
+  <div class="panel-handle"></div>
+  <div class="panel-title">الأقسام</div>
+  <div class="panel-grid">
+    <div class="panel-item" onclick="goTo('sec-html')">
+      <span class="pi-icon">🟧</span>
+      <div class="pi-text">HTML<small>الشهر الأول · 4 أسابيع</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-css')">
+      <span class="pi-icon">🟦</span>
+      <div class="pi-text">CSS<small>الشهر الثاني · 4 أسابيع</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-js')">
+      <span class="pi-icon">🟨</span>
+      <div class="pi-text">JavaScript<small>الشهرين 3 و4 · 8 أسابيع</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-py')">
+      <span class="pi-icon">🐍</span>
+      <div class="pi-text">Python<small>الشهرين 5 و6 · 8 أسابيع</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-daily')">
+      <span class="pi-icon">⏰</span>
+      <div class="pi-text">الجدول اليومي<small>3 ساعات يومياً</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-rules')">
+      <span class="pi-icon">📋</span>
+      <div class="pi-text">قواعد النجاح<small>8 قواعد أساسية</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-goals')">
+      <span class="pi-icon">🏆</span>
+      <div class="pi-text">الأهداف<small>ماذا ستتعلم</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-dev')">
+      <span class="pi-icon">👔</span>
+      <div class="pi-text">المصمم<small>Mohamed Salah</small></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+
+  <!-- LANG -->
+  <button class="nav-item nav-lang" onclick="toggleLang()" title="تغيير اللغة">
+    <span class="nav-icon" id="langLabel">AR</span>
+    <span class="nav-label">اللغة</span>
+  </button>
+
+  <!-- THEME -->
+  <button class="nav-item nav-theme" onclick="toggleTheme()" title="تغيير المظهر">
+    <span class="nav-icon" id="themeIcon">🌙</span>
+    <span class="nav-label">المظهر</span>
+  </button>
+
+  <!-- WHATSAPP CENTER -->
+  <a class="nav-item nav-wa" href="https://wa.me/201113903070" target="_blank" rel="noopener">
+    <div class="wa-circle">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.003 3C9.373 3 4 8.373 4 15.003c0 2.17.586 4.196 1.6 5.94L4 29l8.287-1.573a11.97 11.97 0 0 0 3.716.59C22.633 28.017 28 22.64 28 16.003 28 8.373 22.633 3 16.003 3zm0 21.87a9.87 9.87 0 0 1-3.296-.565l-.236-.094-4.92.935.963-4.799-.154-.248a9.866 9.866 0 0 1-1.36-5.096C7 10.534 11.034 6.13 16.003 6.13c4.97 0 8.997 4.404 8.997 9.873 0 5.468-4.027 9.867-8.997 9.867zm5.44-7.387c-.298-.149-1.763-.87-2.036-.968-.273-.1-.471-.149-.67.149-.198.298-.768.968-.941 1.167-.174.198-.347.223-.645.074-.298-.149-1.259-.464-2.398-1.48-.886-.79-1.484-1.765-1.658-2.063-.174-.298-.018-.46.13-.608.135-.134.298-.347.447-.521.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.074-.149-.67-1.614-.917-2.21-.242-.58-.487-.5-.67-.51a12.46 12.46 0 0 0-.571-.011c-.198 0-.521.074-.794.372s-1.042 1.018-1.042 2.483 1.067 2.88 1.216 3.079c.149.198 2.1 3.204 5.088 4.494.711.307 1.265.49 1.698.627.714.226 1.364.194 1.878.118.573-.086 1.763-.72 2.012-1.416.248-.695.248-1.29.174-1.416-.074-.124-.273-.198-.571-.347z"/>
+      </svg>
+    </div>
+    <span class="nav-label">واتساب</span>
+  </a>
+
+  <!-- SECTIONS -->
+  <button class="nav-item" id="btnSections" onclick="togglePanel()" title="الأقسام">
+    <span class="nav-icon">⊞</span>
+    <span class="nav-label">الأقسام</span>
+  </button>
+
+  <!-- GOALS -->
+  <button class="nav-item" onclick="goTo('sec-goals')" title="الأهداف">
+    <span class="nav-icon">🏆</span>
+    <span class="nav-label">الأهداف</span>
+  </button>
+
+</nav>
+
+<!-- ═══════════════ PAGE CONTENT ═══════════════ -->
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="badge">🎯 ROADMAP · إلزيرو سكول</div>
+    <h1>خطة تعلم البرمجة<br><span>من الصفر للاحتراف</span></h1>
+    <p>مصدر واحد فقط · لا تشتيت · 6 أشهر منضبطة</p>
+    <div class="author-badge">
+      <span>🎓</span>
+      <span>قناة المهندس أسامة الزيرو — Elzero Web School</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-card"><div class="num">6</div><div class="lbl">أشهر</div></div>
+    <div class="stat-card"><div class="num">24</div><div class="lbl">أسبوع</div></div>
+    <div class="stat-card"><div class="num">3</div><div class="lbl">ساعات/يوم</div></div>
+    <div class="stat-card"><div class="num">4+</div><div class="lbl">مشاريع</div></div>
+  </div>
+
+  <!-- TECH LEGEND -->
+  <div class="tech-legend">
+    <div class="tech-tag"><span class="dot" style="background:#e44d26"></span>HTML</div>
+    <div class="tech-tag"><span class="dot" style="background:#5577ee"></span>CSS</div>
+    <div class="tech-tag"><span class="dot" style="background:#f7df1e"></span>JavaScript</div>
+    <div class="tech-tag"><span class="dot" style="background:#3572a5"></span>Python</div>
+  </div>
+
+  <!-- TIMELINE BAR -->
+  <div class="timeline-bar">
+    <h2>📅 توزيع الـ 6 أشهر</h2>
+    <div class="bar-track">
+      <div class="bar-seg" style="width:17%;background:#e44d26">HTML</div>
+      <div class="bar-seg" style="width:17%;background:#5577ee">CSS</div>
+      <div class="bar-seg" style="width:33%;background:#c4a800">JS</div>
+      <div class="bar-seg" style="width:33%;background:#3572a5">Python</div>
+    </div>
+    <div class="bar-labels">
+      <span>شهر 1</span><span>شهر 2</span><span>شهر 3</span><span>شهر 4</span><span>شهر 5</span><span>شهر 6</span>
+    </div>
+  </div>
+
+  <!-- ── HTML ── -->
+  <div id="sec-html" class="phase html-theme">
+    <div class="phase-header">
+      <div class="phase-num">1</div>
+      <div class="phase-title">
+        <h2>🟧 HTML — أساس الويب</h2>
+        <p>هيكل كل صفحة على الإنترنت</p>
+        <a class="phase-link" href="https://youtube.com/playlist?list=PLDoPjvoNmBAw_t_XWUFbBX-c9MafPk9ji" target="_blank">▶ قائمة التشغيل على يوتيوب</a>
+      </div>
+      <div class="phase-duration">4 أسابيع</div>
+    </div>
+    <div class="weeks-grid">
+      <div class="month-label">الشهر الأول</div>
+      <div class="week-card">
+        <div class="week-num">01</div>
+        <div class="week-content">
+          <h3>ما هي البرمجة؟ · كيف يعمل الإنترنت؟ · HTML Basics</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Elements</span><span class="topic-tag">Attributes</span>
+            <span class="topic-tag">Headings</span><span class="topic-tag">Paragraphs</span><span class="topic-tag">Links</span>
+          </div>
+          <div class="week-note">⏱ ساعة مشاهدة + ساعة تطبيق يومياً</div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">02</div>
+        <div class="week-content">
+          <h3>Images · Lists · Tables · Forms</h3>
+          <div class="week-topics">
+            <span class="topic-tag">img</span><span class="topic-tag">ul / ol</span>
+            <span class="topic-tag">table</span><span class="topic-tag">form inputs</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">03</div>
+        <div class="week-content">
+          <h3>Semantic HTML · Layout Structure · Accessibility</h3>
+          <div class="week-topics">
+            <span class="topic-tag">header/nav</span><span class="topic-tag">section/article</span>
+            <span class="topic-tag">footer</span><span class="topic-tag">ARIA basics</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">04</div>
+        <div class="week-content">
+          <h3>🎯 مشروع HTML تطبيقي</h3>
+          <div class="week-topics">
+            <span class="topic-tag">CV شخصي</span><span class="topic-tag">صفحة شركة</span>
+            <span class="topic-tag">صفحة تسجيل دخول</span>
+          </div>
+          <div class="project-badge">📁 ارفع على GitHub</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CSS ── -->
+  <div id="sec-css" class="phase css-theme">
+    <div class="phase-header">
+      <div class="phase-num">2</div>
+      <div class="phase-title">
+        <h2>🟦 CSS — التصميم والجمال</h2>
+        <p>اجعل صفحاتك احترافية ومتجاوبة</p>
+        <a class="phase-link" href="https://youtube.com/playlist?list=PLDoPjvoNmBAzAeIcXA3_JsmSkPKOs9W-Y" target="_blank">▶ قائمة التشغيل على يوتيوب</a>
+      </div>
+      <div class="phase-duration">4 أسابيع</div>
+    </div>
+    <div class="weeks-grid">
+      <div class="month-label">الشهر الثاني</div>
+      <div class="week-card">
+        <div class="week-num">05</div>
+        <div class="week-content">
+          <h3>Selectors · Colors · Backgrounds · Borders · Fonts</h3>
+          <div class="week-topics">
+            <span class="topic-tag">CSS Selectors</span><span class="topic-tag">Colors/HSL</span>
+            <span class="topic-tag">Google Fonts</span><span class="topic-tag">Backgrounds</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">06</div>
+        <div class="week-content">
+          <h3>Box Model · Margin · Padding · Display · Position</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Box Model</span><span class="topic-tag">Display types</span>
+            <span class="topic-tag">Position</span><span class="topic-tag">Z-Index</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">07</div>
+        <div class="week-content">
+          <h3>Flexbox + Grid + Responsive Design</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Flexbox</span><span class="topic-tag">CSS Grid</span>
+            <span class="topic-tag">Media Queries</span><span class="topic-tag">Mobile First</span>
+          </div>
+          <div class="week-note">💡 كرر دروس Flexbox أكثر من مرة — هي الأساس</div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">08</div>
+        <div class="week-content">
+          <h3>🎯 مشروع CSS — موقع كامل</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Transitions</span><span class="topic-tag">Animations</span>
+            <span class="topic-tag">Landing Page</span><span class="topic-tag">Portfolio</span>
+          </div>
+          <div class="week-note">⚠️ من غير نسخ الكود — اكتب كل شيء بإيدك</div>
+          <div class="project-badge">📁 ارفع على GitHub</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── JAVASCRIPT ── -->
+  <div id="sec-js" class="phase js-theme">
+    <div class="phase-header">
+      <div class="phase-num">3</div>
+      <div class="phase-title">
+        <h2>🟨 JavaScript — التفاعل والحياة</h2>
+        <p>اجعل صفحاتك تتحرك وتستجيب</p>
+        <a class="phase-link" href="https://youtube.com/playlist?list=PLknwEmKsW8OuTqUDaFRBiAViDZ5uI3VcE" target="_blank">▶ قائمة التشغيل على يوتيوب</a>
+      </div>
+      <div class="phase-duration">8 أسابيع</div>
+    </div>
+    <div class="weeks-grid">
+      <div class="month-label">الشهر الثالث — Fundamentals</div>
+      <div class="week-card">
+        <div class="week-num">09</div>
+        <div class="week-content">
+          <h3>Variables · Data Types · Operators</h3>
+          <div class="week-topics">
+            <span class="topic-tag">var/let/const</span><span class="topic-tag">String/Number</span>
+            <span class="topic-tag">Boolean</span><span class="topic-tag">Operators</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">10</div>
+        <div class="week-content">
+          <h3>Conditions · Loops</h3>
+          <div class="week-topics">
+            <span class="topic-tag">If/Else</span><span class="topic-tag">Switch</span>
+            <span class="topic-tag">For Loop</span><span class="topic-tag">While Loop</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">11</div>
+        <div class="week-content">
+          <h3>Functions · Arrays · Objects</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Functions</span><span class="topic-tag">Arrow Functions</span>
+            <span class="topic-tag">Arrays</span><span class="topic-tag">Objects</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">12</div>
+        <div class="week-content">
+          <h3>تمارين يومية — حل مسائل عملية</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Array Methods</span><span class="topic-tag">Destructuring</span>
+            <span class="topic-tag">Spread</span><span class="topic-tag">تمارين Elzero</span>
+          </div>
+          <div class="week-note">💡 تمارين إلزيرو يومياً — هي الأهم</div>
+        </div>
+      </div>
+      <div class="month-label">الشهر الرابع — DOM & Projects</div>
+      <div class="week-card">
+        <div class="week-num">13</div>
+        <div class="week-content">
+          <h3>DOM Basics</h3>
+          <div class="week-topics">
+            <span class="topic-tag">getElementById</span><span class="topic-tag">querySelector</span>
+            <span class="topic-tag">innerHTML</span><span class="topic-tag">classList</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">14</div>
+        <div class="week-content">
+          <h3>Events · Manipulating Elements</h3>
+          <div class="week-topics">
+            <span class="topic-tag">addEventListener</span><span class="topic-tag">Event Types</span>
+            <span class="topic-tag">createElement</span><span class="topic-tag">appendChild</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">15</div>
+        <div class="week-content">
+          <h3>ES6+ · Async/Await · Fetch API</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Promises</span><span class="topic-tag">Async/Await</span>
+            <span class="topic-tag">Fetch API</span><span class="topic-tag">JSON</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">16</div>
+        <div class="week-content">
+          <h3>🎯 مشاريع JavaScript</h3>
+          <div class="week-topics">
+            <span class="topic-tag">To-Do App</span><span class="topic-tag">Calculator</span>
+            <span class="topic-tag">Digital Clock</span><span class="topic-tag">Local Storage</span>
+          </div>
+          <div class="project-badge">📁 ارفع على GitHub</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PYTHON ── -->
+  <div id="sec-py" class="phase py-theme">
+    <div class="phase-header">
+      <div class="phase-num">4</div>
+      <div class="phase-title">
+        <h2>🐍 Python — قوة وبساطة</h2>
+        <p>الأكثر طلباً في AI والأتمتة والـ Back-End</p>
+        <a class="phase-link" href="https://youtube.com/playlist?list=PLCTifDArWwqKANPYbIDmso_ZOKNtQiWaE" target="_blank">▶ قائمة التشغيل على يوتيوب</a>
+      </div>
+      <div class="phase-duration">8 أسابيع</div>
+    </div>
+    <div class="weeks-grid">
+      <div class="month-label">الشهر الخامس — Fundamentals</div>
+      <div class="week-card">
+        <div class="week-num">17</div>
+        <div class="week-content">
+          <h3>Python Installation · Variables · Data Types</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Installation</span><span class="topic-tag">Variables</span>
+            <span class="topic-tag">str/int/float</span><span class="topic-tag">Input/Output</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">18</div>
+        <div class="week-content">
+          <h3>Conditions · Loops</h3>
+          <div class="week-topics">
+            <span class="topic-tag">If/Elif/Else</span><span class="topic-tag">For Loop</span>
+            <span class="topic-tag">While Loop</span><span class="topic-tag">Break/Continue</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">19</div>
+        <div class="week-content">
+          <h3>Functions</h3>
+          <div class="week-topics">
+            <span class="topic-tag">def</span><span class="topic-tag">*args/**kwargs</span>
+            <span class="topic-tag">Lambda</span><span class="topic-tag">Built-ins</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">20</div>
+        <div class="week-content">
+          <h3>Lists · Dictionaries · Tuples · Sets</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Lists</span><span class="topic-tag">Dictionaries</span>
+            <span class="topic-tag">Tuples</span><span class="topic-tag">Sets</span>
+          </div>
+        </div>
+      </div>
+      <div class="month-label">الشهر السادس — OOP & Projects</div>
+      <div class="week-card">
+        <div class="week-num">21</div>
+        <div class="week-content">
+          <h3>Files · Modules · Error Handling</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Read/Write Files</span><span class="topic-tag">Try/Except</span>
+            <span class="topic-tag">import Modules</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">22</div>
+        <div class="week-content">
+          <h3>OOP Basics — الكلاسات والوراثة</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Classes</span><span class="topic-tag">__init__</span>
+            <span class="topic-tag">Inheritance</span><span class="topic-tag">Encapsulation</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">23</div>
+        <div class="week-content">
+          <h3>مشاريع صغيرة تطبيقية</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Calculator</span><span class="topic-tag">Student Management</span>
+            <span class="topic-tag">Expense Tracker</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">24</div>
+        <div class="week-content">
+          <h3>🎓 مشروع التخرج — اختر واحداً</h3>
+          <div class="week-topics">
+            <span class="topic-tag">نظام إدارة موظفين</span><span class="topic-tag">نظام مبيعات</span>
+            <span class="topic-tag">Task Manager</span><span class="topic-tag">Finance Tracker</span>
+          </div>
+          <div class="project-badge">📁 ارفع على GitHub + وثّق الكود</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAILY SCHEDULE -->
+  <div id="sec-daily" class="section-card">
+    <h2>⏰ الجدول اليومي المثالي</h2>
+    <div class="daily-grid">
+      <div class="daily-card">
+        <h3>📅 أيام العمل</h3>
+        <div class="daily-row"><span>مشاهدة الدروس</span><span class="time">1 ساعة</span></div>
+        <div class="daily-row"><span>تطبيق الكود بإيدك</span><span class="time">2 ساعة</span></div>
+        <div class="total-row"><span>الإجمالي</span><span>3 ساعات</span></div>
+      </div>
+      <div class="daily-card">
+        <h3>🏖️ أيام الإجازة</h3>
+        <div class="daily-row"><span>تطبيق ومراجعة</span><span class="time">4–6 ساعات</span></div>
+        <div class="daily-row"><span>تحسين مشروع قائم</span><span class="time">اختياري</span></div>
+        <div class="total-row"><span>ركز على المشاريع</span><span>يوم تطبيق</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div id="sec-rules" class="section-card">
+    <h2>📋 قواعد النجاح</h2>
+    <div class="rules-grid">
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>لا تشاهد درساً بدون تطبيق</strong><br><span>الفيديو بدون كود = وقت ضايع</span></div></div>
+      <div class="rule"><span class="rule-icon">✅</span><div><strong>اكتب الكود بإيدك دايماً</strong><br><span>حتى لو الكود موجود قدامك</span></div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>لا تنتقل للدرس التالي</strong><br><span>قبل فهم الحالي بشكل كامل</span></div></div>
+      <div class="rule"><span class="rule-icon">✅</span><div><strong>ابحث عن الأخطاء بنفسك</strong><br><span>ساعتين بحث أفضل من سؤال فوري</span></div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>لا تحفظ الكود</strong><br><span>افهم المنطق — المنطق هو الكود</span></div></div>
+      <div class="rule"><span class="rule-icon">✅</span><div><strong>افتح GitHub من أول يوم</strong><br><span>كل مشروع صغير يستحق يتحط هناك</span></div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong>لا تتشتت بين المصادر</strong><br><span>إلزيرو فقط لمدة 6 شهور كاملة</span></div></div>
+      <div class="rule"><span class="rule-icon">✅</span><div><strong>نفذ مشروعاً كل أسبوعين</strong><br><span>المشاريع هي اللي بتثبت التعلم</span></div></div>
+    </div>
+  </div>
+
+  <!-- ORDER -->
+  <div class="order-section">
+    <h2>🔁 ترتيب التعلم الصحيح</h2>
+    <div class="order-flow">
+      <div class="order-item" style="color:#e44d26">🟧 HTML</div>
+      <span class="order-arrow">→</span>
+      <div class="order-item" style="color:#5577ee">🟦 CSS</div>
+      <span class="order-arrow">→</span>
+      <div class="order-item" style="color:#c4a800">🟨 JavaScript</div>
+      <span class="order-arrow">→</span>
+      <div class="order-item" style="color:#5fa8d3">🐍 Python</div>
+    </div>
+    <p class="order-note">لا يبدأ Python قبل إنهاء HTML وCSS وJavaScript الأساسية.<br>تعلم الويب أولاً يجعل منطق البرمجة أوضح وأعمق.</p>
+  </div>
+
+  <!-- GOALS -->
+  <div id="sec-goals" class="section-card" style="border-color:rgba(201,168,76,.3)">
+    <h2 style="color:var(--gold-light)">🏆 الهدف بعد 6 أشهر</h2>
+    <div class="goal-item"><span class="gi">✅</span><span>بناء صفحات ويب احترافية متجاوبة بـ HTML + CSS</span></div>
+    <div class="goal-item"><span class="gi">✅</span><span>إضافة تفاعل وحركة باستخدام JavaScript</span></div>
+    <div class="goal-item"><span class="gi">✅</span><span>كتابة سكريبتات Python لأتمتة المهام</span></div>
+    <div class="goal-item"><span class="gi">✅</span><span>تنفيذ مشاريع كاملة ورفعها على GitHub</span></div>
+    <div class="goal-item"><span class="gi">✅</span><span>الجاهزية لدخول مسار Front-End أو Automation أو Back-End Python</span></div>
+    <div class="goal-item"><span class="gi">✅</span><span>التقدم لوظائف Junior Developer بثقة ومعه portfolio حقيقي</span></div>
+  </div>
+
+  <!-- DEVELOPER CARD -->
+  <div id="sec-dev" class="dev-card">
+    <div class="dev-title">Designed & Crafted By</div>
+    <div class="dev-name">MOHAMED <span>SALAH</span> 👔</div>
+    <div class="dev-role">
+      <strong>Senior Full Stack & ERP Developer</strong><br>
+      5+ سنوات خبرة في تسليم أنظمة أعمال عبر مصر والخليج العربي
+    </div>
+    <div class="dev-divider"></div>
+    <div class="clients-grid">
+      <div class="client-item"><span class="flag">🇸🇦</span><span>sooqkplus.com</span></div>
+      <div class="client-item"><span class="flag">🇪🇬</span><span>furasmisr.com</span></div>
+      <div class="client-item"><span class="flag">🇸🇪</span><span>nordicbizhub.com</span></div>
+      <div class="client-item"><span class="flag">🇩🇯</span><span>diwanzakat.com</span></div>
+      <div class="client-item"><span class="flag">🇸🇦</span><span>samtahmedical.com</span></div>
+    </div>
+    <div class="dev-divider"></div>
+    <div class="dev-links">
+      <a class="dev-link" href="https://linkedin.com/in/mo222salah" target="_blank">👔 LinkedIn</a>
+      <a class="dev-link" href="https://moh222salah.github.io/cv" target="_blank">💻 Portfolio</a>
+      <a class="dev-link" href="mailto:moh222salah@gmail.com">📧 Email</a>
+      <a class="dev-link wa-link" href="https://wa.me/201113903070" target="_blank">📲 WhatsApp</a>
+    </div>
+    <div class="dev-tagline">My Regards 🌹 — <span>"Building systems that matter."</span></div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+/* THEME TOGGLE */
+const html = document.documentElement;
+const themeIcon = document.getElementById('themeIcon');
+function toggleTheme() {
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  themeIcon.textContent = isDark ? '☀️' : '🌙';
+}
+
+/* LANG TOGGLE */
+const langLabel = document.getElementById('langLabel');
+let isAr = true;
+const translations = {
+  ar: { badge:'🎯 ROADMAP · إلزيرو سكول', h1a:'خطة تعلم البرمجة', h1b:'من الصفر للاحتراف', sub:'مصدر واحد فقط · لا تشتيت · 6 أشهر منضبطة' },
+  en: { badge:'🎯 ROADMAP · Elzero Web School', h1a:'Learn Programming', h1b:'From Zero to Pro', sub:'One Source Only · No Distractions · 6 Disciplined Months' }
+};
+function toggleLang() {
+  isAr = !isAr;
+  langLabel.textContent = isAr ? 'AR' : 'EN';
+  html.setAttribute('lang', isAr ? 'ar' : 'en');
+  html.setAttribute('dir', isAr ? 'rtl' : 'ltr');
+  const t = isAr ? translations.ar : translations.en;
+  document.querySelector('.badge').textContent = t.badge;
+  const h1 = document.querySelector('.header h1');
+  h1.innerHTML = t.h1a + '<br><span>' + t.h1b + '</span>';
+  document.querySelector('.header > p').textContent = t.sub;
+  // re-apply gradient
+  const span = h1.querySelector('span');
+  if(span) { span.style.background = 'linear-gradient(90deg,var(--accent),#00aaff)'; span.style.webkitBackgroundClip='text'; span.style.webkitTextFillColor='transparent'; span.style.backgroundClip='text'; }
+}
+
+/* SECTIONS PANEL */
+const panel = document.getElementById('sectionsPanel');
+const overlay = document.getElementById('panelOverlay');
+const btnSec = document.getElementById('btnSections');
+function togglePanel() {
+  const isOpen = panel.classList.contains('open');
+  isOpen ? closePanel() : openPanel();
+}
+function openPanel() {
+  panel.classList.add('open');
+  overlay.classList.add('open');
+  btnSec.classList.add('active');
+}
+function closePanel() {
+  panel.classList.remove('open');
+  overlay.classList.remove('open');
+  btnSec.classList.remove('active');
+}
+function goTo(id) {
+  closePanel();
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if(el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 200);
+}
+
+/* NAV ACTIVE STATE on scroll */
+const sections = ['sec-html','sec-css','sec-js','sec-py','sec-daily','sec-rules','sec-goals','sec-dev'];
+</script>
+</body>
+</html>
