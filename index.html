@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark" data-lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خطة تعلم البرمجة - إلزيرو سكول</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   THEME VARIABLES
+══════════════════════════════════════ */
+:root {
+  --bg:#0a0e1a; --surface:#111827; --card:#1a2235; --border:#1e2d45;
+  --nav-bg:#0d1220; --nav-border:#1a2540;
+  --text:#e8edf5; --muted:#7a8ba8;
+  --accent:#00d4aa; --gold:#c9a84c; --gold-light:#e8c97a;
+  --html:#e44d26; --css:#5577ee; --js:#c4a800; --py:#5fa8d3;
+  --shadow:rgba(0,0,0,.45);
+}
+[data-theme="light"] {
+  --bg:#f0f4f8; --surface:#fff; --card:#fff; --border:#dde3ee;
+  --nav-bg:#fff; --nav-border:#dde3ee;
+  --text:#1a2235; --muted:#6b7a99; --shadow:rgba(0,0,0,.1);
+}
+
+/* ══════════════════════════════════════
+   BASE
+══════════════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;padding-bottom:86px;
+  transition:background .3s,color .3s;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(0,212,170,.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,212,170,.022) 1px,transparent 1px);
+  background-size:44px 44px;
+  opacity:1;transition:opacity .3s;
+}
+[data-theme="light"] body::before{opacity:0}
+.container{max-width:860px;margin:0 auto;padding:20px 16px 16px;position:relative;z-index:1}
+
+/* ══════════════════════════════════════
+   BOTTOM NAV
+══════════════════════════════════════ */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:9999;
+  background:var(--nav-bg);border-top:1px solid var(--nav-border);
+  display:flex;align-items:stretch;height:70px;padding:0 2px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 -3px 20px var(--shadow);
+  transition:background .3s,border-color .3s;
+}
+@media(min-width:768px){
+  .bottom-nav{
+    max-width:600px;left:50%;right:auto;
+    transform:translateX(-50%);
+    border-radius:20px 20px 0 0;
+    border-left:1px solid var(--nav-border);
+    border-right:1px solid var(--nav-border);
+  }
+}
+.nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;cursor:pointer;border:none;
+  background:none;color:var(--muted);font-family:'Cairo',sans-serif;
+  font-size:10px;font-weight:600;padding:6px 2px;border-radius:10px;
+  transition:color .2s,background .2s;text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.nav-item:hover,.nav-item.active{color:var(--accent)}
+.nav-item.active{background:rgba(0,212,170,.07)}
+.nav-icon{font-size:19px;line-height:1;transition:transform .2s}
+.nav-item:active .nav-icon{transform:scale(.85)}
+.nav-label{font-size:9.5px;line-height:1}
+
+/* lang badge */
+.nav-item.nav-lang .nav-icon{
+  font-size:11px;font-weight:900;background:var(--border);
+  color:var(--text);padding:4px 7px;border-radius:6px;letter-spacing:1px;
+}
+
+/* WA center */
+.nav-item.nav-wa{flex:1.3;position:relative}
+.wa-circle{
+  width:50px;height:50px;background:#25d366;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 16px rgba(37,211,102,.55);
+  position:relative;top:-13px;
+  border:3px solid var(--nav-bg);
+  transition:transform .2s,box-shadow .2s,border-color .3s;
+}
+.nav-item.nav-wa:hover .wa-circle{transform:scale(1.07);box-shadow:0 5px 22px rgba(37,211,102,.7)}
+.wa-circle svg{width:25px;height:25px;fill:#fff}
+.nav-item.nav-wa .nav-label{color:#25d366;font-weight:700;margin-top:-5px}
+
+/* ══════════════════════════════════════
+   SECTIONS PANEL
+══════════════════════════════════════ */
+.panel-overlay{
+  position:fixed;inset:0;z-index:9980;background:rgba(0,0,0,.55);
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.panel-overlay.open{opacity:1;pointer-events:all}
+.sections-panel{
+  position:fixed;bottom:70px;left:0;right:0;z-index:9990;
+  background:var(--nav-bg);border-top:1px solid var(--nav-border);
+  border-radius:22px 22px 0 0;padding:14px 14px 6px;
+  box-shadow:0 -8px 40px var(--shadow);
+  transform:translateY(110%);
+  transition:transform .32s cubic-bezier(.34,1.2,.64,1),background .3s;
+  max-height:68vh;overflow-y:auto;
+}
+.sections-panel.open{transform:translateY(0)}
+@media(min-width:768px){
+  .sections-panel{
+    max-width:600px;left:50%;right:auto;
+    transform:translateX(-50%) translateY(110%);
+    border-left:1px solid var(--nav-border);border-right:1px solid var(--nav-border);
+  }
+  .sections-panel.open{transform:translateX(-50%) translateY(0)}
+}
+.panel-handle{width:34px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 12px}
+.panel-title{font-size:11px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:12px;letter-spacing:1px}
+.panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.panel-item{
+  display:flex;align-items:center;gap:8px;background:var(--card);
+  border:1px solid var(--border);border-radius:10px;padding:9px 11px;
+  cursor:pointer;font-size:11px;font-weight:700;
+  transition:border-color .2s,background .2s,transform .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.panel-item:active{transform:scale(.95)}
+.panel-item .pi-icon{font-size:16px;flex-shrink:0}
+.panel-item small{display:block;font-size:9px;color:var(--muted);font-weight:400;margin-top:1px}
+.panel-item:hover{border-color:var(--accent);background:rgba(0,212,170,.06)}
+
+/* ══════════════════════════════════════
+   HEADER
+══════════════════════════════════════ */
+.header{text-align:center;padding:40px 0 24px;animation:fadeDown .6s ease both}
+.badge{
+  display:inline-block;
+  background:linear-gradient(135deg,rgba(0,212,170,.15),rgba(0,212,170,.04));
+  border:1px solid rgba(0,212,170,.3);color:var(--accent);
+  font-size:11px;padding:5px 18px;border-radius:20px;letter-spacing:2px;margin-bottom:14px;
+}
+.header h1{font-family:'Tajawal',sans-serif;font-size:clamp(22px,6vw,40px);font-weight:900;line-height:1.3;margin-bottom:8px}
+.header h1 .h1-sub{background:linear-gradient(90deg,var(--accent),#00aaff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header p{color:var(--muted);font-size:13px}
+.author-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:30px;padding:8px 20px;margin-top:14px;
+  font-size:12px;color:var(--gold-light);
+  transition:background .3s,border-color .3s;
+}
+
+/* ══════════════════════════════════════
+   STATS
+══════════════════════════════════════ */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:22px 0;animation:fadeUp .6s .15s ease both}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:13px 8px;text-align:center;transition:background .3s,border-color .3s;
+}
+.stat-card .num{font-size:26px;font-weight:900;color:var(--accent);line-height:1}
+.stat-card .lbl{font-size:10px;color:var(--muted);margin-top:4px}
+
+/* ══════════════════════════════════════
+   TECH LEGEND
+══════════════════════════════════════ */
+.tech-legend{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tech-tag{
+  display:flex;align-items:center;gap:5px;background:var(--card);
+  border:1px solid var(--border);border-radius:8px;padding:5px 12px;
+  font-size:12px;font-weight:700;transition:background .3s,border-color .3s;
+}
+.dot{width:8px;height:8px;border-radius:50%}
+
+/* ══════════════════════════════════════
+   TIMELINE BAR
+══════════════════════════════════════ */
+.timeline-bar{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:16px 18px;margin-bottom:24px;
+  transition:background .3s,border-color .3s;
+}
+.timeline-bar .tl-title{font-size:12px;font-weight:700;margin-bottom:11px;color:var(--muted)}
+.bar-track{display:flex;height:32px;border-radius:7px;overflow:hidden;gap:3px}
+.bar-seg{
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:#fff;border-radius:6px;
+  cursor:default;
+}
+.bar-labels{display:flex;justify-content:space-between;margin-top:7px;font-size:10px;color:var(--muted)}
+
+/* ══════════════════════════════════════
+   PHASE
+══════════════════════════════════════ */
+.phase{margin-bottom:26px;scroll-margin-top:16px}
+.phase-header{display:flex;align-items:center;gap:11px;margin-bottom:13px}
+.phase-num{
+  width:43px;height:43px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:900;flex-shrink:0;
+}
+.phase-title{flex:1}
+.phase-title h2{font-size:16px;font-weight:900}
+.phase-title p{font-size:11px;color:var(--muted);margin-top:2px}
+.phase-link{
+  display:inline-flex;align-items:center;gap:4px;font-size:10px;
+  background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.2);
+  color:var(--accent);padding:3px 9px;border-radius:6px;text-decoration:none;margin-top:4px;
+  transition:background .2s;
+}
+.phase-link:hover{background:rgba(0,212,170,.15)}
+.phase-duration{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:4px 11px;font-size:11px;color:var(--accent);
+  font-weight:700;white-space:nowrap;transition:background .3s,border-color .3s;
+}
+
+/* month label */
+.month-label{
+  font-size:10px;color:var(--muted);font-weight:700;
+  text-transform:uppercase;letter-spacing:1.5px;
+  margin:14px 0 8px;padding-right:2px;
+}
+[lang="en"] .month-label,[dir="ltr"] .month-label{padding-right:0;padding-left:2px}
+
+/* ══════════════════════════════════════
+   WEEK CARDS
+══════════════════════════════════════ */
+.weeks-grid{display:grid;gap:8px}
+.week-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:11px 13px;display:grid;grid-template-columns:30px 1fr;
+  align-items:start;gap:10px;
+  transition:border-color .2s,transform .2s,background .3s;
+}
+.week-card:hover{transform:translateX(-2px)}
+[dir="ltr"] .week-card:hover{transform:translateX(2px)}
+.week-num{
+  width:28px;height:28px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:900;flex-shrink:0;margin-top:2px;
+}
+.week-content h3{font-size:12.5px;font-weight:700;margin-bottom:5px;line-height:1.5}
+.week-topics{display:flex;flex-wrap:wrap;gap:4px}
+.topic-tag{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600}
+.week-note{font-size:10px;color:var(--muted);margin-top:5px;font-style:italic}
+.project-badge{
+  display:inline-flex;align-items:center;gap:4px;font-size:10px;
+  background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);
+  color:#c4a800;padding:3px 9px;border-radius:5px;margin-top:5px;font-weight:700;
+}
+
+/* color themes */
+.html-theme .phase-num{background:rgba(228,77,38,.14);color:var(--html);border:1px solid rgba(228,77,38,.3)}
+.html-theme .week-num{background:rgba(228,77,38,.1);color:var(--html)}
+.html-theme .topic-tag{background:rgba(228,77,38,.1);color:var(--html)}
+.html-theme .week-card:hover{border-color:rgba(228,77,38,.3)}
+
+.css-theme .phase-num{background:rgba(85,119,238,.14);color:var(--css);border:1px solid rgba(85,119,238,.3)}
+.css-theme .week-num{background:rgba(85,119,238,.1);color:var(--css)}
+.css-theme .topic-tag{background:rgba(85,119,238,.1);color:var(--css)}
+.css-theme .week-card:hover{border-color:rgba(85,119,238,.3)}
+
+.js-theme .phase-num{background:rgba(196,168,0,.12);color:var(--js);border:1px solid rgba(196,168,0,.25)}
+.js-theme .week-num{background:rgba(196,168,0,.1);color:var(--js)}
+.js-theme .topic-tag{background:rgba(196,168,0,.1);color:var(--js)}
+.js-theme .week-card:hover{border-color:rgba(196,168,0,.3)}
+
+.py-theme .phase-num{background:rgba(95,168,211,.14);color:var(--py);border:1px solid rgba(95,168,211,.3)}
+.py-theme .week-num{background:rgba(95,168,211,.1);color:var(--py)}
+.py-theme .topic-tag{background:rgba(95,168,211,.1);color:var(--py)}
+.py-theme .week-card:hover{border-color:rgba(95,168,211,.3)}
+
+/* ══════════════════════════════════════
+   SECTION CARDS (daily / rules / goals)
+══════════════════════════════════════ */
+.section-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:18px;margin:20px 0;transition:background .3s,border-color .3s;
+  scroll-margin-top:16px;
+}
+.section-card>h2{font-size:14px;font-weight:900;margin-bottom:13px;color:var(--accent)}
+
+.daily-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.daily-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:12px;transition:background .3s,border-color .3s;
+}
+.daily-card h3{font-size:12px;font-weight:700;margin-bottom:8px}
+.daily-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:5px 0;border-bottom:1px solid rgba(128,128,128,.1);font-size:11px;
+}
+.daily-row:last-child{border-bottom:none}
+.daily-row .time{color:var(--accent);font-weight:700;font-size:11.5px}
+.total-row{
+  display:flex;justify-content:space-between;margin-top:8px;
+  background:rgba(0,212,170,.07);border:1px solid rgba(0,212,170,.15);
+  border-radius:7px;padding:6px 10px;font-size:11px;font-weight:700;
+}
+.total-row span:last-child{color:var(--accent)}
+
+.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rule{display:flex;gap:7px;align-items:flex-start;font-size:11.5px;line-height:1.6}
+.rule-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+.rule span{color:var(--muted)}
+
+/* ══════════════════════════════════════
+   ORDER
+══════════════════════════════════════ */
+.order-section{
+  background:linear-gradient(135deg,rgba(0,212,170,.06),rgba(0,170,255,.04));
+  border:1px solid rgba(0,212,170,.18);border-radius:14px;
+  padding:16px;margin:18px 0;text-align:center;
+}
+.order-section h2{font-size:13.5px;font-weight:900;margin-bottom:12px;color:var(--accent)}
+.order-flow{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap}
+.order-item{
+  background:var(--card);border:1px solid var(--border);border-radius:8px;
+  padding:6px 12px;font-size:12px;font-weight:700;
+  transition:background .3s,border-color .3s;
+}
+.order-arrow{color:var(--muted);font-size:13px}
+.order-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.7}
+
+/* ══════════════════════════════════════
+   GOAL ITEMS
+══════════════════════════════════════ */
+.goal-item{
+  display:flex;align-items:flex-start;gap:9px;padding:7px 0;
+  border-bottom:1px solid rgba(128,128,128,.1);font-size:12.5px;
+}
+.goal-item:last-child{border-bottom:none}
+.goal-item .gi{font-size:15px;flex-shrink:0}
+
+/* ══════════════════════════════════════
+   DEVELOPER CARD
+══════════════════════════════════════ */
+.dev-card{
+  background:linear-gradient(135deg,#0d1526 0%,#111f38 50%,#0d1526 100%);
+  border:1px solid var(--gold);border-radius:18px;
+  padding:26px 18px;margin-top:28px;text-align:center;
+  position:relative;overflow:hidden;scroll-margin-top:16px;
+}
+[data-theme="light"] .dev-card{
+  background:linear-gradient(135deg,#f8f3e8 0%,#fdf6e3 50%,#f8f3e8 100%);
+}
+.dev-card::before{
+  content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+  width:260px;height:260px;
+  background:radial-gradient(circle,rgba(201,168,76,.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+.dev-title{font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px}
+.dev-name{font-family:'Tajawal',sans-serif;font-size:clamp(20px,5vw,28px);font-weight:900;margin-bottom:6px}
+.dev-name em{color:var(--gold-light);font-style:normal}
+.dev-role{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.7}
+.dev-role strong{color:var(--accent)}
+.dev-divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px 0;opacity:.3}
+.clients-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:6px;margin:14px 0}
+.client-item{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:8px;padding:6px 10px;font-size:11px;
+}
+[data-theme="light"] .client-item{background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.08)}
+.client-item .flag{font-size:14px}
+.dev-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:14px}
+.dev-link{
+  display:inline-flex;align-items:center;gap:5px;background:var(--card);
+  border:1px solid var(--border);border-radius:8px;padding:7px 12px;
+  font-size:11px;color:var(--text);text-decoration:none;
+  transition:border-color .2s,background .2s;
+}
+.dev-link:hover{border-color:var(--gold);background:rgba(201,168,76,.07)}
+.dev-link.wa-lnk{border-color:rgba(37,211,102,.35);color:#25d366}
+.dev-tagline{font-size:11px;color:var(--muted);margin-top:10px}
+.dev-tagline em{color:var(--gold-light);font-style:normal}
+
+/* ══════════════════════════════════════
+   ANIMATIONS & RESPONSIVE
+══════════════════════════════════════ */
+@keyframes fadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:540px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .daily-grid,.rules-grid{grid-template-columns:1fr}
+}
+@media(min-width:768px){
+  .week-card:hover{transform:translateX(0) scale(1.005)}
+}
+</style>
+</head>
+<body>
+
+<!-- PANEL OVERLAY -->
+<div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
+
+<!-- SECTIONS PANEL -->
+<div class="sections-panel" id="sectionsPanel">
+  <div class="panel-handle"></div>
+  <div class="panel-title" data-ar="الأقسام" data-en="Sections">الأقسام</div>
+  <div class="panel-grid">
+    <div class="panel-item" onclick="goTo('sec-html')">
+      <span class="pi-icon">🟧</span>
+      <div><span data-ar="HTML" data-en="HTML">HTML</span><small data-ar="الشهر الأول · 4 أسابيع" data-en="Month 1 · 4 Weeks">الشهر الأول · 4 أسابيع</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-css')">
+      <span class="pi-icon">🟦</span>
+      <div><span data-ar="CSS" data-en="CSS">CSS</span><small data-ar="الشهر الثاني · 4 أسابيع" data-en="Month 2 · 4 Weeks">الشهر الثاني · 4 أسابيع</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-js')">
+      <span class="pi-icon">🟨</span>
+      <div><span data-ar="JavaScript" data-en="JavaScript">JavaScript</span><small data-ar="الشهران 3 و4 · 8 أسابيع" data-en="Months 3 & 4 · 8 Weeks">الشهران 3 و4 · 8 أسابيع</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-py')">
+      <span class="pi-icon">🐍</span>
+      <div><span data-ar="Python" data-en="Python">Python</span><small data-ar="الشهران 5 و6 · 8 أسابيع" data-en="Months 5 & 6 · 8 Weeks">الشهران 5 و6 · 8 أسابيع</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-daily')">
+      <span class="pi-icon">⏰</span>
+      <div><span data-ar="الجدول اليومي" data-en="Daily Schedule">الجدول اليومي</span><small data-ar="3 ساعات يومياً" data-en="3 Hours / Day">3 ساعات يومياً</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-rules')">
+      <span class="pi-icon">📋</span>
+      <div><span data-ar="قواعد النجاح" data-en="Rules for Success">قواعد النجاح</span><small data-ar="8 قواعد أساسية" data-en="8 Core Rules">8 قواعد أساسية</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-goals')">
+      <span class="pi-icon">🏆</span>
+      <div><span data-ar="الأهداف" data-en="Goals">الأهداف</span><small data-ar="ماذا ستتعلم" data-en="What you will learn">ماذا ستتعلم</small></div>
+    </div>
+    <div class="panel-item" onclick="goTo('sec-dev')">
+      <span class="pi-icon">👔</span>
+      <div><span data-ar="المصمم" data-en="Designer">المصمم</span><small>Mohamed Salah</small></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-item nav-lang" onclick="toggleLang()" title="Language">
+    <span class="nav-icon" id="langLabel">AR</span>
+    <span class="nav-label" data-ar="اللغة" data-en="Language">اللغة</span>
+  </button>
+  <button class="nav-item nav-theme" onclick="toggleTheme()" title="Theme">
+    <span class="nav-icon" id="themeIcon">🌙</span>
+    <span class="nav-label" data-ar="المظهر" data-en="Theme">المظهر</span>
+  </button>
+  <a class="nav-item nav-wa" href="https://wa.me/201113903070" target="_blank" rel="noopener">
+    <div class="wa-circle">
+      <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.003 3C9.373 3 4 8.373 4 15.003c0 2.17.586 4.196 1.6 5.94L4 29l8.287-1.573a11.97 11.97 0 0 0 3.716.59C22.633 28.017 28 22.64 28 16.003 28 8.373 22.633 3 16.003 3zm0 21.87a9.87 9.87 0 0 1-3.296-.565l-.236-.094-4.92.935.963-4.799-.154-.248a9.866 9.866 0 0 1-1.36-5.096C7 10.534 11.034 6.13 16.003 6.13c4.97 0 8.997 4.404 8.997 9.873 0 5.468-4.027 9.867-8.997 9.867zm5.44-7.387c-.298-.149-1.763-.87-2.036-.968-.273-.1-.471-.149-.67.149-.198.298-.768.968-.941 1.167-.174.198-.347.223-.645.074-.298-.149-1.259-.464-2.398-1.48-.886-.79-1.484-1.765-1.658-2.063-.174-.298-.018-.46.13-.608.135-.134.298-.347.447-.521.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.521-.074-.149-.67-1.614-.917-2.21-.242-.58-.487-.5-.67-.51a12.46 12.46 0 0 0-.571-.011c-.198 0-.521.074-.794.372s-1.042 1.018-1.042 2.483 1.067 2.88 1.216 3.079c.149.198 2.1 3.204 5.088 4.494.711.307 1.265.49 1.698.627.714.226 1.364.194 1.878.118.573-.086 1.763-.72 2.012-1.416.248-.695.248-1.29.174-1.416-.074-.124-.273-.198-.571-.347z"/>
+      </svg>
+    </div>
+    <span class="nav-label" data-ar="واتساب" data-en="WhatsApp">واتساب</span>
+  </a>
+  <button class="nav-item" id="btnSections" onclick="togglePanel()">
+    <span class="nav-icon">⊞</span>
+    <span class="nav-label" data-ar="الأقسام" data-en="Sections">الأقسام</span>
+  </button>
+  <button class="nav-item" onclick="goTo('sec-goals')">
+    <span class="nav-icon">🏆</span>
+    <span class="nav-label" data-ar="الأهداف" data-en="Goals">الأهداف</span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════════
+     PAGE CONTENT
+══════════════════════════════════════ -->
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="badge" data-ar="🎯 ROADMAP · إلزيرو سكول" data-en="🎯 ROADMAP · Elzero Web School">🎯 ROADMAP · إلزيرو سكول</div>
+    <h1>
+      <span data-ar="خطة تعلم البرمجة" data-en="Learn Programming">خطة تعلم البرمجة</span><br>
+      <span class="h1-sub" data-ar="من الصفر للاحتراف" data-en="From Zero to Pro">من الصفر للاحتراف</span>
+    </h1>
+    <p data-ar="مصدر واحد فقط · لا تشتيت · 6 أشهر منضبطة" data-en="One Source Only · No Distractions · 6 Disciplined Months">مصدر واحد فقط · لا تشتيت · 6 أشهر منضبطة</p>
+    <div class="author-badge">
+      <span>🎓</span>
+      <span data-ar="قناة المهندس أسامة الزيرو — Elzero Web School" data-en="Osama Elzero's Channel — Elzero Web School">قناة المهندس أسامة الزيرو — Elzero Web School</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-card"><div class="num">6</div><div class="lbl" data-ar="أشهر" data-en="Months">أشهر</div></div>
+    <div class="stat-card"><div class="num">24</div><div class="lbl" data-ar="أسبوع" data-en="Weeks">أسبوع</div></div>
+    <div class="stat-card"><div class="num">3</div><div class="lbl" data-ar="ساعات/يوم" data-en="Hours/Day">ساعات/يوم</div></div>
+    <div class="stat-card"><div class="num">4+</div><div class="lbl" data-ar="مشاريع" data-en="Projects">مشاريع</div></div>
+  </div>
+
+  <!-- TECH LEGEND -->
+  <div class="tech-legend">
+    <div class="tech-tag"><span class="dot" style="background:#e44d26"></span>HTML</div>
+    <div class="tech-tag"><span class="dot" style="background:#5577ee"></span>CSS</div>
+    <div class="tech-tag"><span class="dot" style="background:#f7df1e"></span>JavaScript</div>
+    <div class="tech-tag"><span class="dot" style="background:#3572a5"></span>Python</div>
+  </div>
+
+  <!-- TIMELINE BAR -->
+  <div class="timeline-bar">
+    <div class="tl-title" data-ar="📅 توزيع الـ 6 أشهر" data-en="📅 6-Month Distribution">📅 توزيع الـ 6 أشهر</div>
+    <div class="bar-track">
+      <div class="bar-seg" style="width:17%;background:#e44d26">HTML</div>
+      <div class="bar-seg" style="width:17%;background:#5577ee">CSS</div>
+      <div class="bar-seg" style="width:33%;background:#c4a800">JS</div>
+      <div class="bar-seg" style="width:33%;background:#3572a5">Python</div>
+    </div>
+    <div class="bar-labels">
+      <span data-ar="شهر 1" data-en="Month 1">شهر 1</span>
+      <span data-ar="شهر 2" data-en="Month 2">شهر 2</span>
+      <span data-ar="شهر 3" data-en="Month 3">شهر 3</span>
+      <span data-ar="شهر 4" data-en="Month 4">شهر 4</span>
+      <span data-ar="شهر 5" data-en="Month 5">شهر 5</span>
+      <span data-ar="شهر 6" data-en="Month 6">شهر 6</span>
+    </div>
+  </div>
+
+  <!-- ══════════ HTML ══════════ -->
+  <div id="sec-html" class="phase html-theme">
+    <div class="phase-header">
+      <div class="phase-num">1</div>
+      <div class="phase-title">
+        <h2 data-ar="🟧 HTML — أساس الويب" data-en="🟧 HTML — Web Foundation">🟧 HTML — أساس الويب</h2>
+        <p data-ar="هيكل كل صفحة على الإنترنت" data-en="The structure of every page on the internet">هيكل كل صفحة على الإنترنت</p>
+        <a class="phase-link" href="https://youtube.com/playlist?list=PLDoPjvoNmBAw_t_XWUFbBX-c9MafPk9ji" target="_blank">
+          <span data-ar="▶ قائمة التشغيل على يوتيوب" data-en="▶ Watch Playlist on YouTube">▶ قائمة التشغيل على يوتيوب</span>
+        </a>
+      </div>
+      <div class="phase-duration" data-ar="4 أسابيع" data-en="4 Weeks">4 أسابيع</div>
+    </div>
+    <div class="weeks-grid">
+      <div class="month-label" data-ar="الشهر الأول" data-en="Month 1">الشهر الأول</div>
+      <div class="week-card">
+        <div class="week-num">01</div>
+        <div class="week-content">
+          <h3 data-ar="ما هي البرمجة؟ · كيف يعمل الإنترنت؟ · HTML Basics" data-en="What is Programming? · How the Internet Works · HTML Basics">ما هي البرمجة؟ · كيف يعمل الإنترنت؟ · HTML Basics</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Elements</span><span class="topic-tag">Attributes</span>
+            <span class="topic-tag">Headings</span><span class="topic-tag">Paragraphs</span><span class="topic-tag">Links</span>
+          </div>
+          <div class="week-note" data-ar="⏱ ساعة مشاهدة + ساعة تطبيق يومياً" data-en="⏱ 1 hour watch + 1 hour hands-on practice daily">⏱ ساعة مشاهدة + ساعة تطبيق يومياً</div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">02</div>
+        <div class="week-content">
+          <h3>Images · Lists · Tables · Forms</h3>
+          <div class="week-topics">
+            <span class="topic-tag">img</span><span class="topic-tag">ul / ol</span>
+            <span class="topic-tag">table</span><span class="topic-tag">form inputs</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">03</div>
+        <div class="week-content">
+          <h3>Semantic HTML · Layout Structure · Accessibility</h3>
+          <div class="week-topics">
+            <span class="topic-tag">header / nav</span><span class="topic-tag">section / article</span>
+            <span class="topic-tag">footer</span><span class="topic-tag">ARIA basics</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">04</div>
+        <div class="week-content">
+          <h3 data-ar="🎯 مشروع HTML تطبيقي" data-en="🎯 HTML Practice Project">🎯 مشروع HTML تطبيقي</h3>
+          <div class="week-topics">
+            <span class="topic-tag" data-ar="CV شخصي" data-en="Personal CV">CV شخصي</span>
+            <span class="topic-tag" data-ar="صفحة شركة" data-en="Company Page">صفحة شركة</span>
+            <span class="topic-tag" data-ar="صفحة تسجيل دخول" data-en="Login Page">صفحة تسجيل دخول</span>
+          </div>
+          <div class="project-badge" data-ar="📁 ارفع على GitHub" data-en="📁 Upload to GitHub">📁 ارفع على GitHub</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ CSS ══════════ -->
+  <div id="sec-css" class="phase css-theme">
+    <div class="phase-header">
+      <div class="phase-num">2</div>
+      <div class="phase-title">
+        <h2 data-ar="🟦 CSS — التصميم والجمال" data-en="🟦 CSS — Design & Beauty">🟦 CSS — التصميم والجمال</h2>
+        <p data-ar="اجعل صفحاتك احترافية ومتجاوبة" data-en="Make your pages professional and responsive">اجعل صفحاتك احترافية ومتجاوبة</p>
+        <a class="phase-link" href="https://youtube.com/playlist?list=PLDoPjvoNmBAzAeIcXA3_JsmSkPKOs9W-Y" target="_blank">
+          <span data-ar="▶ قائمة التشغيل على يوتيوب" data-en="▶ Watch Playlist on YouTube">▶ قائمة التشغيل على يوتيوب</span>
+        </a>
+      </div>
+      <div class="phase-duration" data-ar="4 أسابيع" data-en="4 Weeks">4 أسابيع</div>
+    </div>
+    <div class="weeks-grid">
+      <div class="month-label" data-ar="الشهر الثاني" data-en="Month 2">الشهر الثاني</div>
+      <div class="week-card">
+        <div class="week-num">05</div>
+        <div class="week-content">
+          <h3>Selectors · Colors · Backgrounds · Borders · Fonts</h3>
+          <div class="week-topics">
+            <span class="topic-tag">CSS Selectors</span><span class="topic-tag">Colors / HSL</span>
+            <span class="topic-tag">Google Fonts</span><span class="topic-tag">Backgrounds</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">06</div>
+        <div class="week-content">
+          <h3>Box Model · Margin · Padding · Display · Position</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Box Model</span><span class="topic-tag">Display types</span>
+            <span class="topic-tag">Position</span><span class="topic-tag">Z-Index</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">07</div>
+        <div class="week-content">
+          <h3>Flexbox + Grid + Responsive Design</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Flexbox</span><span class="topic-tag">CSS Grid</span>
+            <span class="topic-tag">Media Queries</span><span class="topic-tag">Mobile First</span>
+          </div>
+          <div class="week-note" data-ar="💡 كرر دروس Flexbox أكثر من مرة — هي الأساس" data-en="💡 Repeat Flexbox lessons multiple times — it's the core">💡 كرر دروس Flexbox أكثر من مرة — هي الأساس</div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">08</div>
+        <div class="week-content">
+          <h3 data-ar="🎯 مشروع CSS — موقع كامل" data-en="🎯 CSS Project — Full Website">🎯 مشروع CSS — موقع كامل</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Transitions</span><span class="topic-tag">Animations</span>
+            <span class="topic-tag">Landing Page</span><span class="topic-tag">Portfolio</span>
+          </div>
+          <div class="week-note" data-ar="⚠️ بدون نسخ الكود — اكتب كل شيء بإيدك" data-en="⚠️ No copy-pasting — write every line by hand">⚠️ بدون نسخ الكود — اكتب كل شيء بإيدك</div>
+          <div class="project-badge" data-ar="📁 ارفع على GitHub" data-en="📁 Upload to GitHub">📁 ارفع على GitHub</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ JAVASCRIPT ══════════ -->
+  <div id="sec-js" class="phase js-theme">
+    <div class="phase-header">
+      <div class="phase-num">3</div>
+      <div class="phase-title">
+        <h2 data-ar="🟨 JavaScript — التفاعل والحياة" data-en="🟨 JavaScript — Interactivity & Life">🟨 JavaScript — التفاعل والحياة</h2>
+        <p data-ar="اجعل صفحاتك تتحرك وتستجيب للمستخدم" data-en="Make your pages move and respond to the user">اجعل صفحاتك تتحرك وتستجيب للمستخدم</p>
+        <a class="phase-link" href="https://youtube.com/playlist?list=PLknwEmKsW8OuTqUDaFRBiAViDZ5uI3VcE" target="_blank">
+          <span data-ar="▶ قائمة التشغيل على يوتيوب" data-en="▶ Watch Playlist on YouTube">▶ قائمة التشغيل على يوتيوب</span>
+        </a>
+      </div>
+      <div class="phase-duration" data-ar="8 أسابيع" data-en="8 Weeks">8 أسابيع</div>
+    </div>
+    <div class="weeks-grid">
+      <div class="month-label" data-ar="الشهر الثالث — Fundamentals" data-en="Month 3 — Fundamentals">الشهر الثالث — Fundamentals</div>
+      <div class="week-card">
+        <div class="week-num">09</div>
+        <div class="week-content">
+          <h3>Variables · Data Types · Operators</h3>
+          <div class="week-topics">
+            <span class="topic-tag">var / let / const</span><span class="topic-tag">String / Number</span>
+            <span class="topic-tag">Boolean</span><span class="topic-tag">Operators</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">10</div>
+        <div class="week-content">
+          <h3>Conditions · Loops</h3>
+          <div class="week-topics">
+            <span class="topic-tag">If / Else</span><span class="topic-tag">Switch</span>
+            <span class="topic-tag">For Loop</span><span class="topic-tag">While Loop</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">11</div>
+        <div class="week-content">
+          <h3>Functions · Arrays · Objects</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Functions</span><span class="topic-tag">Arrow Functions</span>
+            <span class="topic-tag">Arrays</span><span class="topic-tag">Objects</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">12</div>
+        <div class="week-content">
+          <h3 data-ar="تمارين يومية — حل مسائل عملية" data-en="Daily Exercises — Solve Real Problems">تمارين يومية — حل مسائل عملية</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Array Methods</span><span class="topic-tag">Destructuring</span>
+            <span class="topic-tag">Spread</span>
+            <span class="topic-tag" data-ar="تمارين Elzero" data-en="Elzero Exercises">تمارين Elzero</span>
+          </div>
+          <div class="week-note" data-ar="💡 تمارين إلزيرو يومياً — هي الأهم" data-en="💡 Elzero exercises daily — they are the most important">💡 تمارين إلزيرو يومياً — هي الأهم</div>
+        </div>
+      </div>
+      <div class="month-label" data-ar="الشهر الرابع — DOM & Projects" data-en="Month 4 — DOM & Projects">الشهر الرابع — DOM & Projects</div>
+      <div class="week-card">
+        <div class="week-num">13</div>
+        <div class="week-content">
+          <h3>DOM Basics</h3>
+          <div class="week-topics">
+            <span class="topic-tag">getElementById</span><span class="topic-tag">querySelector</span>
+            <span class="topic-tag">innerHTML</span><span class="topic-tag">classList</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">14</div>
+        <div class="week-content">
+          <h3>Events · Manipulating Elements</h3>
+          <div class="week-topics">
+            <span class="topic-tag">addEventListener</span><span class="topic-tag">Event Types</span>
+            <span class="topic-tag">createElement</span><span class="topic-tag">appendChild</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">15</div>
+        <div class="week-content">
+          <h3>ES6+ · Async/Await · Fetch API</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Promises</span><span class="topic-tag">Async / Await</span>
+            <span class="topic-tag">Fetch API</span><span class="topic-tag">JSON</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">16</div>
+        <div class="week-content">
+          <h3 data-ar="🎯 مشاريع JavaScript" data-en="🎯 JavaScript Projects">🎯 مشاريع JavaScript</h3>
+          <div class="week-topics">
+            <span class="topic-tag">To-Do App</span><span class="topic-tag">Calculator</span>
+            <span class="topic-tag">Digital Clock</span><span class="topic-tag">Local Storage</span>
+          </div>
+          <div class="project-badge" data-ar="📁 ارفع على GitHub" data-en="📁 Upload to GitHub">📁 ارفع على GitHub</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PYTHON ══════════ -->
+  <div id="sec-py" class="phase py-theme">
+    <div class="phase-header">
+      <div class="phase-num">4</div>
+      <div class="phase-title">
+        <h2 data-ar="🐍 Python — قوة وبساطة" data-en="🐍 Python — Power & Simplicity">🐍 Python — قوة وبساطة</h2>
+        <p data-ar="الأكثر طلباً في AI والأتمتة والـ Back-End" data-en="Most in-demand for AI, Automation & Back-End">الأكثر طلباً في AI والأتمتة والـ Back-End</p>
+        <a class="phase-link" href="https://youtube.com/playlist?list=PLCTifDArWwqKANPYbIDmso_ZOKNtQiWaE" target="_blank">
+          <span data-ar="▶ قائمة التشغيل على يوتيوب" data-en="▶ Watch Playlist on YouTube">▶ قائمة التشغيل على يوتيوب</span>
+        </a>
+      </div>
+      <div class="phase-duration" data-ar="8 أسابيع" data-en="8 Weeks">8 أسابيع</div>
+    </div>
+    <div class="weeks-grid">
+      <div class="month-label" data-ar="الشهر الخامس — Fundamentals" data-en="Month 5 — Fundamentals">الشهر الخامس — Fundamentals</div>
+      <div class="week-card">
+        <div class="week-num">17</div>
+        <div class="week-content">
+          <h3>Python Installation · Variables · Data Types</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Installation</span><span class="topic-tag">Variables</span>
+            <span class="topic-tag">str / int / float</span><span class="topic-tag">Input / Output</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">18</div>
+        <div class="week-content">
+          <h3>Conditions · Loops</h3>
+          <div class="week-topics">
+            <span class="topic-tag">If / Elif / Else</span><span class="topic-tag">For Loop</span>
+            <span class="topic-tag">While Loop</span><span class="topic-tag">Break / Continue</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">19</div>
+        <div class="week-content">
+          <h3>Functions</h3>
+          <div class="week-topics">
+            <span class="topic-tag">def</span><span class="topic-tag">*args / **kwargs</span>
+            <span class="topic-tag">Lambda</span><span class="topic-tag">Built-ins</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">20</div>
+        <div class="week-content">
+          <h3>Lists · Dictionaries · Tuples · Sets</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Lists</span><span class="topic-tag">Dictionaries</span>
+            <span class="topic-tag">Tuples</span><span class="topic-tag">Sets</span>
+          </div>
+        </div>
+      </div>
+      <div class="month-label" data-ar="الشهر السادس — OOP & Projects" data-en="Month 6 — OOP & Projects">الشهر السادس — OOP & Projects</div>
+      <div class="week-card">
+        <div class="week-num">21</div>
+        <div class="week-content">
+          <h3>Files · Modules · Error Handling</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Read / Write Files</span><span class="topic-tag">Try / Except</span>
+            <span class="topic-tag">import Modules</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">22</div>
+        <div class="week-content">
+          <h3 data-ar="OOP Basics — الكلاسات والوراثة" data-en="OOP Basics — Classes & Inheritance">OOP Basics — الكلاسات والوراثة</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Classes</span><span class="topic-tag">__init__</span>
+            <span class="topic-tag">Inheritance</span><span class="topic-tag">Encapsulation</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">23</div>
+        <div class="week-content">
+          <h3 data-ar="مشاريع صغيرة تطبيقية" data-en="Small Practice Projects">مشاريع صغيرة تطبيقية</h3>
+          <div class="week-topics">
+            <span class="topic-tag">Calculator</span>
+            <span class="topic-tag" data-ar="إدارة الطلاب" data-en="Student Management">إدارة الطلاب</span>
+            <span class="topic-tag">Expense Tracker</span>
+          </div>
+        </div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">24</div>
+        <div class="week-content">
+          <h3 data-ar="🎓 مشروع التخرج — اختر واحداً" data-en="🎓 Graduation Project — Choose One">🎓 مشروع التخرج — اختر واحداً</h3>
+          <div class="week-topics">
+            <span class="topic-tag" data-ar="نظام إدارة موظفين" data-en="Employee Management System">نظام إدارة موظفين</span>
+            <span class="topic-tag" data-ar="نظام مبيعات" data-en="Sales System">نظام مبيعات</span>
+            <span class="topic-tag">Task Manager</span>
+            <span class="topic-tag">Finance Tracker</span>
+          </div>
+          <div class="project-badge" data-ar="📁 ارفع على GitHub + وثّق الكود" data-en="📁 Upload to GitHub + Document the Code">📁 ارفع على GitHub + وثّق الكود</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAILY SCHEDULE -->
+  <div id="sec-daily" class="section-card">
+    <h2 data-ar="⏰ الجدول اليومي المثالي" data-en="⏰ Ideal Daily Schedule">⏰ الجدول اليومي المثالي</h2>
+    <div class="daily-grid">
+      <div class="daily-card">
+        <h3 data-ar="📅 أيام العمل" data-en="📅 Workdays">📅 أيام العمل</h3>
+        <div class="daily-row"><span data-ar="مشاهدة الدروس" data-en="Watch Lessons">مشاهدة الدروس</span><span class="time">1h</span></div>
+        <div class="daily-row"><span data-ar="تطبيق الكود بإيدك" data-en="Code by Hand">تطبيق الكود بإيدك</span><span class="time">2h</span></div>
+        <div class="total-row"><span data-ar="الإجمالي اليومي" data-en="Daily Total">الإجمالي اليومي</span><span>3h</span></div>
+      </div>
+      <div class="daily-card">
+        <h3 data-ar="🏖️ أيام الإجازة" data-en="🏖️ Days Off">🏖️ أيام الإجازة</h3>
+        <div class="daily-row"><span data-ar="تطبيق ومراجعة" data-en="Practice & Review">تطبيق ومراجعة</span><span class="time">4–6h</span></div>
+        <div class="daily-row"><span data-ar="تحسين مشروع قائم" data-en="Improve a Project">تحسين مشروع قائم</span><span class="time" data-ar="اختياري" data-en="Optional">اختياري</span></div>
+        <div class="total-row"><span data-ar="ركز على المشاريع" data-en="Focus on Projects">ركز على المشاريع</span><span data-ar="يوم تطبيق" data-en="Practice Day">يوم تطبيق</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div id="sec-rules" class="section-card">
+    <h2 data-ar="📋 قواعد النجاح" data-en="📋 Rules for Success">📋 قواعد النجاح</h2>
+    <div class="rules-grid">
+      <div class="rule"><span class="rule-icon">❌</span><div><strong data-ar="لا تشاهد درساً بدون تطبيق" data-en="Never watch without coding">لا تشاهد درساً بدون تطبيق</strong><br><span data-ar="الفيديو بدون كود = وقت ضايع" data-en="Video without code = wasted time">الفيديو بدون كود = وقت ضايع</span></div></div>
+      <div class="rule"><span class="rule-icon">✅</span><div><strong data-ar="اكتب الكود بإيدك دايماً" data-en="Always write code by hand">اكتب الكود بإيدك دايماً</strong><br><span data-ar="حتى لو الكود موجود قدامك" data-en="Even if the answer is right in front of you">حتى لو الكود موجود قدامك</span></div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong data-ar="لا تنتقل للدرس التالي" data-en="Don't skip to the next lesson">لا تنتقل للدرس التالي</strong><br><span data-ar="قبل فهم الحالي بشكل كامل" data-en="Before fully understanding the current one">قبل فهم الحالي بشكل كامل</span></div></div>
+      <div class="rule"><span class="rule-icon">✅</span><div><strong data-ar="ابحث عن الأخطاء بنفسك" data-en="Debug on your own first">ابحث عن الأخطاء بنفسك</strong><br><span data-ar="ساعتين بحث أفضل من سؤال فوري" data-en="2 hours of research beats instant questions">ساعتين بحث أفضل من سؤال فوري</span></div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong data-ar="لا تحفظ الكود" data-en="Never memorize code">لا تحفظ الكود</strong><br><span data-ar="افهم المنطق — المنطق هو الكود" data-en="Understand the logic — logic IS the code">افهم المنطق — المنطق هو الكود</span></div></div>
+      <div class="rule"><span class="rule-icon">✅</span><div><strong data-ar="افتح GitHub من أول يوم" data-en="Open GitHub on Day 1">افتح GitHub من أول يوم</strong><br><span data-ar="كل مشروع صغير يستحق يتحط هناك" data-en="Every small project belongs there">كل مشروع صغير يستحق يتحط هناك</span></div></div>
+      <div class="rule"><span class="rule-icon">❌</span><div><strong data-ar="لا تتشتت بين المصادر" data-en="Don't scatter between sources">لا تتشتت بين المصادر</strong><br><span data-ar="إلزيرو فقط لمدة 6 شهور كاملة" data-en="Elzero only — for 6 full months">إلزيرو فقط لمدة 6 شهور كاملة</span></div></div>
+      <div class="rule"><span class="rule-icon">✅</span><div><strong data-ar="نفذ مشروعاً كل أسبوعين" data-en="Build a project every 2 weeks">نفذ مشروعاً كل أسبوعين</strong><br><span data-ar="المشاريع هي اللي بتثبت التعلم" data-en="Projects are what cement your learning">المشاريع هي اللي بتثبت التعلم</span></div></div>
+    </div>
+  </div>
+
+  <!-- ORDER -->
+  <div class="order-section">
+    <h2 data-ar="🔁 ترتيب التعلم الصحيح" data-en="🔁 The Correct Learning Order">🔁 ترتيب التعلم الصحيح</h2>
+    <div class="order-flow">
+      <div class="order-item" style="color:#e44d26">🟧 HTML</div>
+      <span class="order-arrow">→</span>
+      <div class="order-item" style="color:#5577ee">🟦 CSS</div>
+      <span class="order-arrow">→</span>
+      <div class="order-item" style="color:#c4a800">🟨 JavaScript</div>
+      <span class="order-arrow">→</span>
+      <div class="order-item" style="color:#5fa8d3">🐍 Python</div>
+    </div>
+    <p class="order-note" data-ar="لا تبدأ Python قبل إنهاء HTML وCSS وJavaScript الأساسية. تعلم الويب أولاً يجعل منطق البرمجة أوضح وأعمق." data-en="Don't start Python before finishing HTML, CSS and JavaScript basics. Learning web first makes programming logic clearer and deeper.">لا تبدأ Python قبل إنهاء HTML وCSS وJavaScript الأساسية. تعلم الويب أولاً يجعل منطق البرمجة أوضح وأعمق.</p>
+  </div>
+
+  <!-- GOALS -->
+  <div id="sec-goals" class="section-card" style="border-color:rgba(201,168,76,.3)">
+    <h2 style="color:var(--gold-light)" data-ar="🏆 الهدف بعد 6 أشهر" data-en="🏆 Goals After 6 Months">🏆 الهدف بعد 6 أشهر</h2>
+    <div class="goal-item"><span class="gi">✅</span><span data-ar="بناء صفحات ويب احترافية متجاوبة بـ HTML + CSS" data-en="Build professional, responsive web pages with HTML + CSS">بناء صفحات ويب احترافية متجاوبة بـ HTML + CSS</span></div>
+    <div class="goal-item"><span class="gi">✅</span><span data-ar="إضافة تفاعل وحركة باستخدام JavaScript" data-en="Add interactivity and animations using JavaScript">إضافة تفاعل وحركة باستخدام JavaScript</span></div>
+    <div class="goal-item"><span class="gi">✅</span><span data-ar="كتابة سكريبتات Python لأتمتة المهام" data-en="Write Python scripts to automate tasks">كتابة سكريبتات Python لأتمتة المهام</span></div>
+    <div class="goal-item"><span class="gi">✅</span><span data-ar="تنفيذ مشاريع كاملة ورفعها على GitHub" data-en="Build complete projects and publish them on GitHub">تنفيذ مشاريع كاملة ورفعها على GitHub</span></div>
+    <div class="goal-item"><span class="gi">✅</span><span data-ar="الجاهزية لدخول مسار Front-End أو Automation أو Back-End Python" data-en="Be ready to enter a Front-End, Automation, or Back-End Python track">الجاهزية لدخول مسار Front-End أو Automation أو Back-End Python</span></div>
+    <div class="goal-item"><span class="gi">✅</span><span data-ar="التقدم لوظائف Junior Developer بثقة مع portfolio حقيقي" data-en="Apply for Junior Developer roles confidently with a real portfolio">التقدم لوظائف Junior Developer بثقة مع portfolio حقيقي</span></div>
+  </div>
+
+  <!-- DEVELOPER CARD -->
+  <div id="sec-dev" class="dev-card">
+    <div class="dev-title" data-ar="صُمِّمَت بواسطة" data-en="Designed & Crafted By">صُمِّمَت بواسطة</div>
+    <div class="dev-name">MOHAMED <em>SALAH</em> 👔</div>
+    <div class="dev-role">
+      <strong>Senior Full Stack & ERP Developer</strong><br>
+      <span data-ar="أكثر من 5 سنوات خبرة في تسليم أنظمة أعمال قابلة للتطوير عبر مصر والخليج العربي" data-en="5+ years of hands-on experience delivering scalable business systems across Egypt and the GCC">أكثر من 5 سنوات خبرة في تسليم أنظمة أعمال قابلة للتطوير عبر مصر والخليج العربي</span>
+    </div>
+    <div class="dev-divider"></div>
+    <div class="clients-grid">
+      <div class="client-item"><span class="flag">🇸🇦</span><span>sooqkplus.com</span></div>
+      <div class="client-item"><span class="flag">🇪🇬</span><span>furasmisr.com</span></div>
+      <div class="client-item"><span class="flag">🇸🇪</span><span>nordicbizhub.com</span></div>
+      <div class="client-item"><span class="flag">🇩🇯</span><span>diwanzakat.com</span></div>
+      <div class="client-item"><span class="flag">🇸🇦</span><span>samtahmedical.com</span></div>
+    </div>
+    <div class="dev-divider"></div>
+    <div class="dev-links">
+      <a class="dev-link" href="https://linkedin.com/in/mo222salah" target="_blank">👔 LinkedIn</a>
+      <a class="dev-link" href="https://moh222salah.github.io/cv" target="_blank">💻 Portfolio</a>
+      <a class="dev-link" href="mailto:moh222salah@gmail.com">📧 Email</a>
+      <a class="dev-link wa-lnk" href="https://wa.me/201113903070" target="_blank">📲 WhatsApp</a>
+    </div>
+    <div class="dev-tagline">My Regards 🌹 — <em>"Building systems that matter, one line at a time."</em></div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+/* ──────────────────────────────
+   THEME TOGGLE
+────────────────────────────── */
+const html = document.documentElement;
+const themeIcon = document.getElementById('themeIcon');
+
+function toggleTheme() {
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  themeIcon.textContent = isDark ? '☀️' : '🌙';
+}
+
+/* ──────────────────────────────
+   LANGUAGE TOGGLE
+────────────────────────────── */
+const langLabel = document.getElementById('langLabel');
+let currentLang = 'ar';
+
+function applyLang(lang) {
+  // Update html attributes
+  html.setAttribute('lang', lang);
+  html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+  html.setAttribute('data-lang', lang);
+  langLabel.textContent = lang === 'ar' ? 'AR' : 'EN';
+
+  // Update all data-ar / data-en elements
+  document.querySelectorAll('[data-ar]').forEach(el => {
+    const val = lang === 'ar' ? el.dataset.ar : el.dataset.en;
+    if (val !== undefined && val !== '') el.textContent = val;
+  });
+
+  // Re-apply gradient on h1 span (textContent strips styling)
+  const h1sub = document.querySelector('.h1-sub');
+  if (h1sub) {
+    h1sub.style.background = 'linear-gradient(90deg,var(--accent),#00aaff)';
+    h1sub.style.webkitBackgroundClip = 'text';
+    h1sub.style.webkitTextFillColor = 'transparent';
+    h1sub.style.backgroundClip = 'text';
+  }
+}
+
+function toggleLang() {
+  currentLang = currentLang === 'ar' ? 'en' : 'ar';
+  applyLang(currentLang);
+}
+
+/* ──────────────────────────────
+   SECTIONS PANEL
+────────────────────────────── */
+const panel = document.getElementById('sectionsPanel');
+const overlay = document.getElementById('panelOverlay');
+const btnSec = document.getElementById('btnSections');
+
+function togglePanel() {
+  panel.classList.contains('open') ? closePanel() : openPanel();
+}
+function openPanel() {
+  panel.classList.add('open');
+  overlay.classList.add('open');
+  btnSec.classList.add('active');
+}
+function closePanel() {
+  panel.classList.remove('open');
+  overlay.classList.remove('open');
+  btnSec.classList.remove('active');
+}
+function goTo(id) {
+  closePanel();
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 220);
+}
+
+/* Init */
+applyLang('ar');
+</script>
+</body>
+</html>
